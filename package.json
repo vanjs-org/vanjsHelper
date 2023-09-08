@@ -1,0 +1,83 @@
+{
+  "name": "vanjshelper",
+  "displayName": "vanjsHelper",
+  "description": "My personal extension for writing VanJS code in VS Code.",
+  "version": "0.0.1",
+  "publisher": "TaoXin",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vanjsHelper.insertChild",
+        "title": "Insert Child"
+      },
+      {
+        "command": "vanjsHelper.insertSymbol",
+        "title": "Insert Symbol"
+      },
+      {
+        "command": "vanjsHelper.insertLink",
+        "title": "Insert Link"
+      },
+      {
+        "command": "vanjsHelper.importComponent",
+        "title": "vanjsHelper: Import Component"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "vanjsHelper.insertSymbol",
+        "key": "ctrl+6",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vanjsHelper.insertLink",
+        "key": "ctrl+7",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vanjsHelper.insertChild",
+        "key": "ctrl+8",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanjs-org/vanjsHelper.git"
+  },
+  "author": "Tao Xin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vanjs-org/vanjsHelper/issues"
+  },
+  "homepage": "https://github.com/vanjs-org/vanjsHelper",
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.81.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6",
+    "vsce": "^2.15.0"
+  }
+}
