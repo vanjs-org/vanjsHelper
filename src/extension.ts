@@ -18,6 +18,9 @@ const getWordAtPosition = (editor: vscode.TextEditor) => {
 	return editor.document.getText(wordRange);
 }
 
+const positionSame = (a: vscode.Position, b: vscode.Position) =>
+	a.line === b.line && a.character === b.character
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -28,18 +31,49 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vanjsHelper.insertSymbol', withEditor(editor => {
-			editor.insertSnippet(new vscode.SnippetString('Symbol("")'))
-			move(editor, 8)
+			if (positionSame(editor.selection.start, editor.selection.end)) {
+				editor.insertSnippet(new vscode.SnippetString('Symbol("")'))
+				move(editor, 8)
+				return
+			}
+			const text = editor.document.getText(editor.selection)
+			editor.edit(editBuilder => {
+				editBuilder.replace(editor.selection, `", Symbol("${text}"), "`)
+			})
+			const newPos = editor.selection.start.translate(0, 11)
+			editor.selection = new vscode.Selection(newPos, newPos)
 		})),
-		vscode.commands.registerCommand('vanjsHelper.insertLink', withEditor(async editor => {
-			editor.insertSnippet(new vscode.SnippetString('Link("", "")'))
-			move(editor, 6)
+		vscode.commands.registerCommand('vanjsHelper.insertLink', withEditor(editor => {
+			if (positionSame(editor.selection.start, editor.selection.end)) {
+				editor.insertSnippet(new vscode.SnippetString('Link("", "")'))
+				move(editor, 6)
+				return
+			}
+			const text = editor.document.getText(editor.selection)
+			editor.edit(editBuilder => {
+				editBuilder.replace(editor.selection, `", Link("${text}", ""), "`)
+			})
+			const newPos = editor.selection.start.translate(0, 13 + text.length)
+			editor.selection = new vscode.Selection(newPos, newPos)
 		})),
-		vscode.commands.registerCommand('vanjsHelper.insertChild', withEditor(async editor => {
+		vscode.commands.registerCommand('vanjsHelper.insertSymLink', withEditor(editor => {
+			if (positionSame(editor.selection.start, editor.selection.end)) {
+				editor.insertSnippet(new vscode.SnippetString('SymLink("", "")'))
+				move(editor, 9)
+				return
+			}
+			const text = editor.document.getText(editor.selection)
+			editor.edit(editBuilder => {
+				editBuilder.replace(editor.selection, `", SymLink("${text}", ""), "`)
+			})
+			const newPos = editor.selection.start.translate(0, 16 + text.length)
+			editor.selection = new vscode.Selection(newPos, newPos)
+		})),
+		vscode.commands.registerCommand('vanjsHelper.insertChild', withEditor(editor => {
 			editor.insertSnippet(new vscode.SnippetString('", , " '))
 			move(editor, 3)
 		})),
-		vscode.commands.registerCommand('vanjsHelper.importComponent', withEditor(async editor => {
+		vscode.commands.registerCommand('vanjsHelper.importComponent', withEditor(editor => {
 			const word = getWordAtPosition(editor)
 			if (!word) {
 				vscode.window.showErrorMessage("No symbol at the current point")
@@ -63,6 +97,10 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			if (!matches) vscode.window.showErrorMessage("No component import line found.")
+		})),
+		vscode.commands.registerCommand('vanjsHelper.test', withEditor(editor => {
+			console.log("here")
+			console.log({start: editor.selection.start, end: editor.selection.end, eq: editor.selection.start === editor.selection.end})
 		})),
 	);
 }

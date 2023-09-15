@@ -16,19 +16,27 @@
     "commands": [
       {
         "command": "vanjsHelper.insertChild",
-        "title": "Insert Child"
+        "title": "vanjsHelper: Insert Child"
       },
       {
         "command": "vanjsHelper.insertSymbol",
-        "title": "Insert Symbol"
+        "title": "vanjsHelper: Insert Symbol"
       },
       {
         "command": "vanjsHelper.insertLink",
-        "title": "Insert Link"
+        "title": "vanjsHelper: Insert Link"
+      },
+      {
+        "command": "vanjsHelper.insertSymLink",
+        "title": "vanjsHelper: Insert SymLink"
       },
       {
         "command": "vanjsHelper.importComponent",
         "title": "vanjsHelper: Import Component"
+      },
+      {
+        "command": "vanjsHelper.test",
+        "title": "vanjsHelper: Test"
       }
     ],
     "keybindings": [
@@ -40,6 +48,11 @@
       {
         "command": "vanjsHelper.insertLink",
         "key": "ctrl+7",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vanjsHelper.insertSymLink",
+        "key": "ctrl+shift+7",
         "when": "editorTextFocus"
       },
       {
